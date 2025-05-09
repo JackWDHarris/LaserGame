@@ -5,13 +5,13 @@ using Uduino;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
-public class gpt : MonoBehaviour
+public class ArduinoOut : MonoBehaviour
 {
     float pitch;
     float roll;
     int tiltZone = 0;
 
-    public float frequency = 440f;  // Current desired frequency
+    public float frequency;  // Current desired frequency
     private float phase = 0f;
     private float sampleRate;
     private float lastFreq;
@@ -42,6 +42,7 @@ public class gpt : MonoBehaviour
         string[] parts = data.Split(',');
         if (parts.Length == 2)
         {
+            
             if (float.TryParse(parts[0], out float p))
                 pitch = p;
             if (float.TryParse(parts[1], out float r))
@@ -55,10 +56,11 @@ public class gpt : MonoBehaviour
 
         if (!isConnected)
         {
+            Debug.Log("Using slider");
             frequency = slider.value;
             return;
         }
-
+        // Debug.Log("roll: " + roll + ", Pitch: " + pitch);
         float angle = Mathf.Atan2(roll, pitch) * Mathf.Rad2Deg;
         if (angle < 0) angle += 360f;
 
